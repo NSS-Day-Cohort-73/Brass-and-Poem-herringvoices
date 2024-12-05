@@ -279,7 +279,67 @@ void AddProduct(List<Product> products, List<ProductType> productTypes)
 
 void UpdateProduct(List<Product> products, List<ProductType> productTypes)
 {
-    throw new NotImplementedException();
+    while (true)
+    {
+        DisplayAllProducts(products, productTypes);
+        Console.WriteLine(
+            "Enter the number of the product you wish to update or enter 0 to return to the main menu."
+        );
+        int choice = int.Parse(Console.ReadLine().Trim());
+
+        if (choice == 0)
+        {
+            break;
+        }
+        Product productToUpdate = products[choice - 1];
+
+        Console.WriteLine(
+            $"Current Name: {productToUpdate.Name}. Enter a new name or press 'Enter' to leave unchanged."
+        );
+        string updatedName = Console.ReadLine().Trim();
+
+        if (!string.IsNullOrEmpty(updatedName))
+        {
+            productToUpdate.Name = updatedName;
+            Console.WriteLine($"Name updated to '{updatedName}'");
+        }
+
+        Console.WriteLine(
+            $"Current price: {productToUpdate.Price}. Enter a new price or press 'Enter' to leave unchanged."
+        );
+        string priceString = Console.ReadLine().Trim();
+        if (!string.IsNullOrEmpty(priceString))
+        {
+            productToUpdate.Price = decimal.Parse(priceString);
+            Console.WriteLine($"Price updated to '{productToUpdate.Price:C}'");
+        }
+
+        Console.WriteLine(
+            $"Current category: {productTypes.FirstOrDefault(item => item.Id == productToUpdate.ProductTypeId).Title}"
+        );
+        Console.WriteLine("Select a new category or press 'Enter' to leave unchanged.");
+        for (int i = 0; i < productTypes.Count; i++)
+        {
+            Console.WriteLine($"{i + 1}. {productTypes[i].Title}");
+        }
+        string typeString = Console.ReadLine().Trim();
+        if (!string.IsNullOrEmpty(typeString))
+        {
+            int typeChoice = int.Parse(typeString);
+            productToUpdate.ProductTypeId = productTypes[typeChoice - 1].Id;
+            Console.WriteLine(
+                $"Category updated to '{productTypes.FirstOrDefault(item => item.Id == productToUpdate.ProductTypeId).Title}'"
+            );
+        }
+        Console.WriteLine($"Product '{productToUpdate.Name}' has been updated.");
+
+        Console.WriteLine("Enter 0 to return to the main menu or 1 to update another product:");
+        int nextChoice = int.Parse(Console.ReadLine().Trim());
+        if (nextChoice == 0)
+        {
+            break;
+        }
+    }
 }
 
 DisplayMenu();
